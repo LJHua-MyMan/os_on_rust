@@ -1,0 +1,21 @@
+# 设置构建目标配置文件为"x86_64-cjn.json"
+# 这是一个json文件描述了目标系统的特定配置。
+[build]
+target = "x86_64-cjn_os.json"
+
+# `build-std` 配置选项在 `.cargo/config.toml` 文件中用于告诉 `cargo` 构建过程需要编译特定的 Rust 标准库的组件。通常，这些库会被 Rust 工具链自动引入并预编译，但当你在一个裸机环境（bare metal environment）或者自定义目标（如写操作系统）时，可能需要手动编译这些库。
+# - `core`: 这是完全不依赖于操作系统抽象的最小级别标准库部分。它为所有目标平台提供基础类型和trait等核心语言支持，因此非常适合裸机、嵌入式开发或自制操作系统内核。
+#- `compiler_builtins`: 这个 crate 提供了很多底层构建块以支持高级语言特性，比如某些整数算数操作等。正常情况下此crate由Rust工具链隐式地处理。
+#当设置 `build-std = ["core", "compiler_builtins"]` 时，意味着在构建项目的同时也会对这两个 crate 进行编译，并且会始终使用与你项目相同配置来编译它们（例如针对特定架构优化），而非使用预先构建好的版本。 这对于交叉编译到不同于主机平台的目标架构尤其有用。
+#  you should not add compiler_builtins as dependency yourself. cargo will build it automatically for you.
+# https://github.com/rust-lang/compiler-builtins/issues/334
+# [unstable]
+build-std = ["core", "compiler_builtins"]
+build-std-features = ["compiler-builtins-mem"]
+
+# `bootloader runner` 不是 Cargo 或 Rust 的内置命令，也不是一个约定俗成的固定写法。
+# 它实际上应该代表了一个特定于你的项目或环境的可执行工具或脚本。
+#在 Rust 项目中，你可以在 `.cargo/config.toml` 或 `.cargo/config` 
+#中为特定目标指定运行器 (`runner`)。 这个运行器就是在构建编译好的可执行文件后用于自动执行它的工具。
+[target.'cfg(target_os) = "none"']
+runner = "bootimage runner"

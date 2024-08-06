@@ -1,0 +1,7 @@
+# `rust-toolchain` 文件是 Rust 项目的一个配置文件，用于指定该项目应当使用哪个 Rust 工具链版本。如果在工程目录下存在这个文件，`cargo` 和 `rustc` 就会根据其中的内容来选择合适的 Rust 版本进行构建。
+#当 `rust-toolchain` 文件仅包含单词 `nightly`, 它意味着：
+#- 项目需要使用 Rust 的 nightly 版本。
+#- 当你运行 `cargo build` 或其他 Cargo 命令时，Cargo 将检查并使用安装的最新 nightly 版本工具链。如果没有安装，它将自动为你下载和安装。 
+#Nightly 是 Rust 三种发行渠道中的一种（另外两种是 stable 和 beta）, 这个渠道提供了所有最新开发中的特性和改进，但可能不稳定或变化频繁。通常用于测试、实验性项目或者需要某些尚在测试阶段特性的场合。
+
+nightly
